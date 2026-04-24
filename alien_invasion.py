@@ -91,10 +91,25 @@ class AlienInvasion:
     def _check_fleet_edges(self):
         for alien in self.aliens.sprites():
             if alien.check_edges():
-                self.fleet_direction *= -1
+                self.ai_settings.fleet_direction *= -1
                 for alien in self.aliens.sprites():
                     alien.rect.y += self.ai_settings.fleet_drop_speed
                 break
+
+    def _create_fleet(self):
+        alien = Alien(self.ai_settings, self.screen)
+        alien_width, alien_height = alien.rect.size
+        available_space_x = self.ai_settings.screen_width - 2 * alien_width
+        number_aliens_x = available_space_x // (2 * alien_width)
+        available_space_y = (self.ai_settings.screen_height - (3 * alien_height) - self.ship.rect.height)
+        number_rows = available_space_y // (2 * alien_height)
+        for row_number in range(number_rows):
+            for alien_number in range(number_aliens_x):
+                alien = Alien(self.ai_settings, self.screen)
+                alien.x = alien_width + 2 * alien_width * alien_number
+                alien.rect.x = alien.x
+                alien.rect.y = alien_height + 2 * alien_height * row_number
+                self.aliens.add(alien)
 
     def _ship_hit(self):
         self.stats.ships_left -= 1

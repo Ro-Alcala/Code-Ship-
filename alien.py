@@ -13,10 +13,13 @@ class Alien(pygame.sprite.Sprite):
         self.rect.x = 10
         self.rect.y = 10
 
+        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
         self.speed = ai_settings.alien_speed
 
     def update(self, direction):
-        self.rect.x += self.speed * direction
+        self.x += self.speed * direction
+        self.rect.x = self.x
 
     def check_edges(self):
         screen_rect = self.screen.get_rect()
